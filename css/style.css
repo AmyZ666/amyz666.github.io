@@ -1413,7 +1413,7 @@ a:hover,a:active {
 .site-top .lower-cantiner {
     position:absolute;
     left:50%;
-    min-width:758.4px;
+/*    min-width:758.4px;*/
     pointer-events:none
 }
 .site-top .lower {
