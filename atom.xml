@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="/"/>
-  <updated>2020-08-01T05:59:24.577Z</updated>
+  <updated>2020-08-01T11:21:12.508Z</updated>
   <id>/</id>
   
   <author>
@@ -17,11 +17,61 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>reprinted articles</title>
+    <link href="/reprinted-articles/"/>
+    <id>/reprinted-articles/</id>
+    <published>2020-08-01T11:14:41.000Z</published>
+    <updated>2020-08-01T11:21:12.508Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;转载测试&lt;/p&gt;
+
+        
+      
+    
+    </summary>
+    
+      <category term="转载" scheme="/categories/%E8%BD%AC%E8%BD%BD/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>suixiang-test</title>
+    <link href="/suixiang-test/"/>
+    <id>/suixiang-test/</id>
+    <published>2020-08-01T11:03:19.000Z</published>
+    <updated>2020-08-01T11:21:22.877Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;随想测试&lt;/p&gt;
+
+        
+      
+    
+    </summary>
+    
+      <category term="随想" scheme="/categories/%E9%9A%8F%E6%83%B3/"/>
+    
+    
+  </entry>
+  
+  <entry>
     <title>Prometheus+Grafana安装及使用</title>
     <link href="/prometheus-grafana/"/>
     <id>/prometheus-grafana/</id>
     <published>2020-08-01T05:47:15.000Z</published>
-    <updated>2020-08-01T05:59:24.577Z</updated>
+    <updated>2020-08-01T11:21:29.360Z</updated>
     
     <summary type="html">
     
@@ -45,7 +95,7 @@
     <link href="/rancher-install-k8s/"/>
     <id>/rancher-install-k8s/</id>
     <published>2020-08-01T05:14:19.000Z</published>
-    <updated>2020-08-01T06:00:21.910Z</updated>
+    <updated>2020-08-01T11:21:36.340Z</updated>
     
     <summary type="html">
     
