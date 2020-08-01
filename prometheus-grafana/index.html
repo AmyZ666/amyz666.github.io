@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
   
-  <title itemprop="name">video | 从零开始的小站</title>
+  <title itemprop="name">Prometheus+Grafana安装及使用 | 从零开始的小站</title>
   
     <link rel="shortcut icon" href="/images/favicon.ico">
   
@@ -357,132 +357,326 @@
   </div>
 </header>
 
-        <div class="pattern-center-blank"></div>
-  
-  <div id="content" class="site-content">
-    <article class="post-item post-301 page type-page status-publish has-post-thumbnail hentry">
+      <link rel="stylesheet" type="text/css" href="/css/sharejs.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+<div class="pattern-center-blank"></div>
+
+  <div class="pattern-center single-center">
+    <!-- 有配图默认渲染第一张 -->
+    <div class="pattern-attachment-img lazyload" style="background-image: url(https://cdn.jsdelivr.net/gh/amyz666/cdn@latest/img/photos/aptira_grafana_prometheus_training.png);" src="https://cdn.jsdelivr.net/gh/amyz666/cdn@latest/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/amyz666/cdn@latest/img/photos/aptira_grafana_prometheus_training.png">
+    </div>
+    <header class="pattern-header single-header">
+      <h1 class="entry-title">
+      Prometheus+Grafana安装及使用</h1>
+      <p class="entry-census">
+        <span>
+          <a href="rezeroing.com">
+            <img src="https://cdn.jsdelivr.net/gh/amyz666/cdn@latest/img/custom/avatar.png">
+          </a>
+        </span>
+        <span>
+          <a href="rezeroing.com">AmyZ</a>
+        </span>
+        <span class="bull">
+        ·</span>
+        2020-8-1<span class="bull">
+        ·</span>
+      <span id="busuanzi_value_page_pv"></span>次阅读</p>
+    </header>
+  </div>
+
+<div id="content" class="site-content">
+  <div id="primary" class="content-area">
+    <main id="main" class="site-main" role="main">
+      <article id="post-1" class="post-1 post type-post status-publish format-standard has-post-thumbnail hentry category-uncategorized">
+        <div class="toc"></div>
+        <!--<div class="toc-entry-content"><!-- 套嵌目录使用（主要为了支援评论）-->
+        
+        <div class="entry-content">
+          <h2 id="Prometheus安装及使用"><a href="#Prometheus安装及使用" class="headerlink" title="Prometheus安装及使用"></a>Prometheus安装及使用</h2><p>该图说明了普罗米修斯（Prometheus）及其一些生态系统组件的整体架构：</p>
+<p><img src="&#39;https://cdn.jsdelivr.net/gh/amyz666/cdn@latest/img/project/image-master/Pro1.jpg?raw=true" alt="image"><br>我们用到了下面exporter：<br>node_exporter – 用于机器系统数据收集（主要是cpu等信息的收集）<br></p>
+<h4 id="首先安装GO"><a href="#首先安装GO" class="headerlink" title="首先安装GO"></a>首先安装GO</h4><p>每个需要检测的服务器都要安装go</p>
+<pre><code>$ yum install go
+$ go version
+$ go version go1.6.3 linux/amd64
+</code></pre><h4 id="下载安装Prometheus（https-prometheus-io-download-）"><a href="#下载安装Prometheus（https-prometheus-io-download-）" class="headerlink" title="下载安装Prometheus（https://prometheus.io/download/）"></a>下载安装Prometheus（<a href="https://prometheus.io/download/）" target="_blank" rel="noopener">https://prometheus.io/download/）</a></h4><pre><code>$ wget https://github.com/prometheus/prometheus/releases/download/v2.3.0/prometheus-2.3.0.linux-amd64.tar.gz
+$ tar zxvf prometheus-2.3.0.linux-amd64.tar.gz -C /usr/local/
+$ ln -sv /usr/local/prometheus-2.3.0.linux-amd64/ /usr/local/prometheus
+$ cd /usr/local/prometheus
+</code></pre><p>首先，在创造上的主机文件系统的最小Prometheus配置文件prometheus.yml （替换你要监控的IP地址）：</p>
+<pre><code>
+# my global config
+global:
+  scrape_interval:     15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+  # scrape_timeout is set to the global default (10s).
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+      # - alertmanager:9093
+
+# Load rules once and periodically evaluate them according to the global &#39;evaluation_interval&#39;.
+rule_files:
+  # - &quot;first_rules.yml&quot;
+  # - &quot;second_rules.yml&quot;
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it&#39;s Prometheus itself.
+scrape_configs:
+  # The job name is added as a label `job=&lt;job_name&gt;` to any timeseries scraped from this config.
+  - job_name: &#39;prometheus&#39;
+
+    # metrics_path defaults to &#39;/metrics&#39;
+    # scheme defaults to &#39;http&#39;.
+
+    static_configs:
+    - targets: [&#39;localhost:9090&#39;]
+
+  - job_name: linux
+    static_configs:
+    - targets: [&#39;192.168.5.71:9100&#39;,&#39;192.168.5.73:9100&#39;]
+
+
+</code></pre><p>192.168.5.73是我们另一个服务器的IP，端口则是对应的exporter的监听端口。</p>
+<h4 id="启动Prometheus"><a href="#启动Prometheus" class="headerlink" title="启动Prometheus"></a>启动Prometheus</h4><pre><code>$  ./prometheus --config.file=prometheus.yml
+</code></pre><p>如果想后台运行的话就用nohup</p>
+<pre><code>$  nohup ./prometheus --config.file=prometheus.yml &amp;
+</code></pre><p>Prometheus内置了一个web界面，我们可通过<a href="http://monitor_host:9090进行访问：" target="_blank" rel="noopener">http://monitor_host:9090进行访问：</a><br><br><img src="https://github.com/AmyZ666/image/blob/master/Pro3.png?raw=true" alt="image"></p>
+<h4 id="安装并运行exporter"><a href="#安装并运行exporter" class="headerlink" title="安装并运行exporter"></a>安装并运行exporter</h4><p>下载exporters并解压到被监控端服务器：</p>
+<pre><code>$ wget https://github.com/prometheus/node_exporter/releases/download/v0.14.0/node_exporter-0.14.0.linux-amd64.tar.gz
+$ tar xvf node_exporter-0.14.0.linux-amd64.tar.gz -C /usr/local/
+$ nohup /usr/local/node_exporter-0.14.0.linux-amd64/node_exporter &amp;
+</code></pre><p>我们再次回到Status-&gt;Targets页面，可以看到两个Target的状态已经变成UP了:<br><br><img src="https://github.com/AmyZ666/image/blob/master/Pro6.png?raw=true" alt="image"><br>Prometheus自带的图形并不够强大，于是我们可以使用Grafana作为Prometheus的Dashboard。</p>
+<h2 id="安装运行Grafana"><a href="#安装运行Grafana" class="headerlink" title="安装运行Grafana"></a>安装运行Grafana</h2><h4 id="Grafana安装配置介绍"><a href="#Grafana安装配置介绍" class="headerlink" title="Grafana安装配置介绍"></a>Grafana安装配置介绍</h4><pre><code>$ wget https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana-4.2.0-1.x86_64.rpm 
+$ sudo yum localinstall grafana-4.2.0-1.x86_64.rpm
+</code></pre><p>编辑配置文件/etc/grafana/grafana.ini，修改dashboards.json段落下两个参数的值：</p>
+<pre><code>[dashboards.json]
+enabled = true
+path = /var/lib/grafana/dashboard
+</code></pre><h4 id="安装仪表盘（Percona提供）"><a href="#安装仪表盘（Percona提供）" class="headerlink" title="安装仪表盘（Percona提供）"></a>安装仪表盘（Percona提供）</h4><pre><code>$ git clone https://github.com/percona/grafana-dashboards.git
+$ cp -r grafana-dashboards/dashboards /var/lib/grafana
+</code></pre><p>运行以下命令为Grafana打个补丁，不然图表不能正常显示：</p>
+<pre><code>$ sed -i &#39;s/expr=\(.\)\.replace(\(.\)\.expr,\(.\)\.scopedVars\(.*\)var \(.\)=\(.\)\.interval/expr=\1.replace(\2.expr,\3.scopedVars\4var \5=\1.replace(\6.interval, \3.scopedVars)/&#39; /usr/share/grafana/public/app/plugins/datasource/prometheus/datasource.js
+$ sed -i &#39;s/,range_input/.replace(\/&quot;{\/g,&quot;\\&quot;&quot;).replace(\/}&quot;\/g,&quot;\\&quot;&quot;),range_input/; s/step_input:&quot;&quot;/step_input:this.target.step/&#39; /usr/share/grafana/public/app/plugins/datasource/prometheus/query_ctrl.js
+</code></pre><h4 id="最后我们运行Grafana服务"><a href="#最后我们运行Grafana服务" class="headerlink" title="最后我们运行Grafana服务"></a>最后我们运行Grafana服务</h4><pre><code>$ systemctl daemon-reload
+$ systemctl start grafana-server
+$ systemctl status grafana-server
+</code></pre><p>我们可通过<a href="http://monitor_host:3000访问Grafana网页界面（缺省的帐号/密码为admin/admin）" target="_blank" rel="noopener">http://monitor_host:3000访问Grafana网页界面（缺省的帐号/密码为admin/admin）</a>:<br><img src="https://github.com/AmyZ666/image/blob/master/Gra7.png?raw=true" alt="image"></p>
+<p>给Grafana添加数据源，数据源有多种，例如：Graphite、CloudWatch、Elasticsearch、InfluxDB、OpenTSDB、Prometheus。这里我们选择用Prometheus：</p>
+<p><img src="https://github.com/AmyZ666/image/blob/master/Gra6.png?raw=true" alt="image"></p>
+<p>下面是展示部分数据分析图：</p>
+<p><img src="https://github.com/AmyZ666/image/blob/master/Gra5.png?raw=true" alt="image"></p>
+<h3 id="Grafana基本概念以及使用"><a href="#Grafana基本概念以及使用" class="headerlink" title="Grafana基本概念以及使用"></a>Grafana基本概念以及使用</h3><h5 id="Data-Source："><a href="#Data-Source：" class="headerlink" title="Data Source："></a>Data Source：</h5><p>grafana确切的说是一个前端展示工具，将数据以非常美观直接的图形展示出来。那么这些数据必须有一个来源吧，grafana获取数据的地方就称为Data Source。官方文档上说grafana支持以下数据源：Graphite, InfluxDB, OpenTSDB, Prometheus, Elasticsearch, CloudWatch。在Grafana 3.0+之后，grafana不仅仅支持上面说的这些数据源，还支持一些其它的数据源，这些就称为Grafana Plugins，grafana支持的插件非常多（grafana支持的插件传送门），只要做一些简单的插件安装配置，你就能获取丰富的数据源，后面的文章会讲解如何安装配置使用grafana-zabbix，elasticsearch等插件。</p>
+<h5 id="DashBoard："><a href="#DashBoard：" class="headerlink" title="DashBoard："></a>DashBoard：</h5><p>仪表盘，就像汽车仪表盘一样可以展示很多信息，包括车速，水箱温度等。Grafana的DashBoard就是以各种图形的方式来展示从Datasource拿到的数据。</p>
+<h5 id="Row："><a href="#Row：" class="headerlink" title="Row："></a>Row：</h5><p>DashBoard的基本组成单元，一个DashBoard可以包含很多个row。一个row可以展示一种信息或者多种信息的组合，比如系统内存使用率，CPU五分钟及十分钟平均负载等。所以在一个DashBoard上可以集中展示很多内容。</p>
+<h5 id="Panel："><a href="#Panel：" class="headerlink" title="Panel："></a>Panel：</h5><p>面板，实际上就是row展示信息的方式，支持表格（table），列表（alert list），热图（Heatmap）等多种方式，具体可以去官网上查阅。</p>
+<h5 id="Query-Editor："><a href="#Query-Editor：" class="headerlink" title="Query Editor："></a>Query Editor：</h5><p>用来指定获取哪一部分数据。类似于sql查询语句，比如你要在某个row里面展示test这张表的数据，那么Query Editor里面就可以写成select *from test。这只是一种比方，实际上每个DataSource获取数据的方式都不一样，所以写法也不一样，比如像zabbix，数据是以指定某个监控项的方式来获取的。</p>
+<h5 id="Organization："><a href="#Organization：" class="headerlink" title="Organization："></a>Organization：</h5><p>org是一个很大的概念，每个用户可以拥有多个org，grafana有一个默认的main org。用户登录后可以在不同的org之间切换，前提是该用户拥有多个org。不同的org之间完全不一样，包括datasource，dashboard等都不一样。创建一个org就相当于开了一个全新的视图，所有的datasource，dashboard等都要再重新开始创建。</p>
+<h5 id="User："><a href="#User：" class="headerlink" title="User："></a>User：</h5><p>这个概念应该很简单，不用多说。Grafana里面用户有三种角色admin,editor,viewer。admin权限最高，可以执行任何操作，包括创建用户，新增Datasource，创建DashBoard。editor角色不可以创建用户，不可以新增Datasource，可以创建DashBoard。viewer角色仅可以查看DashBoard。在2.1版本及之后新增了一种角色read only editor（只读编辑模式），这种模式允许用户修改DashBoard，但是不允许保存。每个user可以拥有多个organization。</p>
+<h2 id="prometheus监控设备基础项"><a href="#prometheus监控设备基础项" class="headerlink" title="prometheus监控设备基础项"></a>prometheus监控设备基础项</h2><p>简单整理一些常规的监控查询语句，也可以直接从grafana官网下载相关的模板，模板中有相当高效优质的查询语句，推荐使用模板    </p>
+<p>cpu一分钟负载<br><br>node_load1<br></p>
+<p>cpu五分钟负载<br><br>node_load5<br></p>
+<p>cpu十五分钟负载<br><br>node_load15<br></p>
+<p>内存总量<br><br>node_memory_MemTotal </p>
+<p>占用内存（不准确）<br><br>node_memory_MemTotal-node_memory_MemFree</p>
+<p>可用内存<br><br>node_memory_MemFree</p>
+<p>可用空间<br><br>node_filesystem_avail{device=~”/dev/.+”}</p>
+<p>总空间<br><br>node_filesystem_size{device=~”/dev/.+”}</p>
+<p>已用空间<br><br>node_filesystem_size{device=~”/dev/.+”}-node_filesystem_avail{device=~”/dev/.+”}</p>
+<p>IO读byte<br><br>node_disk_bytes_read{device=~”sd.+”}</p>
+<p>IO写byte<br><br>node_disk_bytes_written{device=~”sd.+”}</p>
+<p>接收流量统计<br><br>node_network_receive_bytes{device=~”eth.+”}</p>
+<p>发送流量统计<br><br>node_network_transmit_bytes{device=~”eth.+”}</p>
+<p>运行时间<br><br>node_boot_time</p>
+<h2 id="Prometheus查询"><a href="#Prometheus查询" class="headerlink" title="Prometheus查询"></a>Prometheus查询</h2><p>Prometheus提供了一种功能表达式语言，允许用户实时选择和汇总时间序列数据。表达式的结果可以显示为图形，在Prometheus的表达式浏览器中显示为表格数据，或者由外部系统通过HTTP API使用。</p>
+<p>假如我要计算go_gc_duration_seconds_sum，在Metrics里的query写下</p>
+<pre><code>go_gc_duration_seconds_sum
+</code></pre><p>（注意：Panel data source不要选错，选择你一开始设定的数据源）如下图：<br><img src="https://github.com/AmyZ666/image/blob/master/seach1.png?raw=true" alt="image"></p>
+<ul>
+<li>=：选择与提供的字符串完全相同的标签。</li>
+<li>!=：选择不等于提供的字符串的标签。</li>
+<li>=~：选择正则表达式匹配提供的字符串（或子字符串）的标签。</li>
+<li>!~：选择不与提供的字符串（或子字符串）正则表达式匹配的标签。</li>
+</ul>
+<p>可以通过{}来进行监测服务器的过滤，例如选择job=“linux”的服务器，在Metrics里的query写下：</p>
+<pre><code>go_gc_duration_seconds_sum{job=&quot;linux&quot;}
+</code></pre><p>如下图：<br><img src="https://github.com/AmyZ666/image/blob/master/seach2.png?raw=true" alt="image"><br>当然可以选择自己想要监控的服务器名称，例如选择71和73这两个服务器，在Metrics里的query写下：</p>
+<pre><code>go_gc_duration_seconds_sum{instance=~&quot;192.168.5.71:9100|192.168.5.73:9100&quot;}
+</code></pre><p>如下图：<br><img src="https://github.com/AmyZ666/image/blob/master/seach3.png?raw=true" alt="image"></p>
+<p>如果计算连个服务器数据的和，在表达式前加sum(),若果是求平均，加avg（），这里算求和，在Metrics里的query写下：</p>
+<pre><code>sum(go_gc_duration_seconds_sum{instance=~&quot;192.168.5.71:9100|192.168.5.73:9100&quot;})
+</code></pre><p>（注意：Legend format可以编写你算出来的表达式的名字）如下图：<br><img src="https://github.com/AmyZ666/image/blob/master/search4.png?raw=true" alt="image"></p>
+<p>同理，其他聚合函数如平均avg(),最小min()，最大max()等等。</p>
+<p>如果一个查询方法经常使用，例如：</p>
+<pre><code>sum(go_gc_duration_seconds_sum{instance=~&quot;192.168.5.71:9100|192.168.5.73:9100&quot;})
+</code></pre><p>=~可以搭配通配符来使用，例如：</p>
+<pre><code>go_gc_duration_seconds_sum{instance=~&quot;.*:9100&quot;}
+</code></pre><p>意思为把所有后缀为:9100的instance全部计算出来。<br><br>常用的表达式写入rule文件中，写入之后，在在Metrics里的query中写你定义的record中的名字即可。这样做的好处是在收集数据时在时序数据库中就已经存好了你要查询的值，直接调用即可，不用再次计算，节省CPU。</p>
+<pre><code>rate(查询语句)[5m]
+</code></pre><p>代表5分钟内的数据</p>
+<h4 id="点这里查看更多查询语法"><a href="#点这里查看更多查询语法" class="headerlink" title="点这里查看更多查询语法"></a><a href="https://prometheus.io/docs/prometheus/2.3/querying/basics/" target="_blank" rel="noopener">点这里查看更多查询语法</a></h4><h2 id="Prometheus录制规则"><a href="#Prometheus录制规则" class="headerlink" title="Prometheus录制规则"></a>Prometheus录制规则</h2><p>录制规则允许您预先计算经常需要或计算成本高的表达式，并将其结果保存为一组新的时间序列。因此，查询预先计算的结果通常比每次需要时执行原始表达式快得多。这对于仪表板尤其有用，仪表板需要在每次刷新时重复查询相同的表达式。</p>
+<h4 id="规则文件的语法是："><a href="#规则文件的语法是：" class="headerlink" title="规则文件的语法是："></a>规则文件的语法是：</h4><pre><code>groups:
+  [ - &lt;rule_group&gt; ]
+</code></pre><h4 id="一个简单的示例规则文件是："><a href="#一个简单的示例规则文件是：" class="headerlink" title="一个简单的示例规则文件是："></a>一个简单的示例规则文件是：</h4><pre><code>groups:
+  - name: example
+    rules:
+    - record: job:http_inprogress_requests:sum
+      expr: sum(http_inprogress_requests) by (job)
+</code></pre><h4 id="lt-rule-group-gt"><a href="#lt-rule-group-gt" class="headerlink" title="&lt;rule_group&gt;"></a>&lt;rule_group&gt;</h4><pre><code># The name of the group. Must be unique within a file.
+name: &lt;string&gt;
+
+# How often rules in the group are evaluated.
+[ interval: &lt;duration&gt; | default = global.evaluation_interval ]
+
+rules:
+  [ - &lt;rule&gt; ... ]
+</code></pre><h2 id="Prometheus动态配置目标"><a href="#Prometheus动态配置目标" class="headerlink" title="Prometheus动态配置目标"></a>Prometheus动态配置目标</h2><p>最简单的配置是静态目标：</p>
+<pre><code>scrape_configs:
+  - job_name: &#39;prometheus&#39;
+
+    static_configs:
+      - targets: [&#39;localhost:9090&#39;, &#39;localhost:9100&#39;]
+        labels:
+          group: &#39;prometheus&#39;
+</code></pre><p>更改此文件后，可以发送 SIGHUP 触发配置重新加载。<br><br>Prometheus 提供了服务发现功能，可以从 consul, dns, kubernetes, file 等等多种来源发现新的目标。</p>
+<p>其中最简单的是从文件发现服务。</p>
+<p>例如 /usr/local/prometheus/prometheus.yml 配置如下：</p>
+<pre><code># my global config
+global:
+  scrape_interval:     15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+  # scrape_timeout is set to the global default (10s).
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+      # - alertmanager:9093
+
+# Load rules once and periodically evaluate them according to the global &#39;evaluation_interval&#39;.
+rule_files:
+  - &quot;first_rules.yml&quot;
+  # - &quot;second_rules.yml&quot;
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it&#39;s Prometheus itself.
+scrape_configs:
+  # The job name is added as a label `job=&lt;job_name&gt;` to any timeseries scraped from this config.
+  - job_name: &#39;prometheus&#39;
+
+    # metrics_path defaults to &#39;/metrics&#39;
+    # scheme defaults to &#39;http&#39;.
+
+    static_configs:
+    - targets: [&#39;localhost:9090&#39;]
+
+  - job_name: linux
+    static_configs:
+    - targets: [&#39;192.168.5.71:9100&#39;]
+      labels:
+        group: &quot;bbb&quot;
+  - job_name: &#39;test&#39;
+    file_sd_configs:
+      - files: [&#39;/usr/local/prometheus/test_sd_config/*.yml&#39;]
+        refresh_interval: 5s
+
+</code></pre><p>启动 prometheus:</p>
+<pre><code>nohup ./prometheus --config.file=prometheus.yml &amp;
+</code></pre><p>创建 /usr/local/prometheus/test_sd_config/test.yml 如下</p>
+<pre><code>- targets: [ &quot;192.168.5.75:9100&quot; ]
+  labels:
+    group: &quot;aaa&quot;
+</code></pre><p>5s内就会自动读取 test.yml 并添加新的目标。<br>可用浏览器打开Prometheus 9090 端口,<br>查看 Status 中的 Configuration, Targets, Service Discovery,<br>可以看到新添加的目标。</p>
+<h2 id="去掉导航栏"><a href="#去掉导航栏" class="headerlink" title="去掉导航栏"></a>去掉导航栏</h2><p>在Grafana页面中，按F12打开控制台，看source中加载的css文件，里面有一个带数字的css（好像是一共有两个css，其中一个），去linux中的public/css文件夹中找到相应的css文件，前面加上</p>
+<pre><code>.navbar-inner{display:none};
+</code></pre><p>然后重启Grafana服务（一定要关掉服务，不然不能加载出修改的css）</p>
+<h4 id="有关于Prometheus的介绍、概念、使用等具体问题请参考下面网址："><a href="#有关于Prometheus的介绍、概念、使用等具体问题请参考下面网址：" class="headerlink" title="有关于Prometheus的介绍、概念、使用等具体问题请参考下面网址："></a>有关于Prometheus的介绍、概念、使用等具体问题请参考下面网址：</h4><p><a href="https://prometheus.io/" target="_blank" rel="noopener">Prometheus官网</a><br></p>
+<h4 id="有关于Grafana的介绍、概念、使用等具体问题请参考下面网址"><a href="#有关于Grafana的介绍、概念、使用等具体问题请参考下面网址" class="headerlink" title="有关于Grafana的介绍、概念、使用等具体问题请参考下面网址:"></a>有关于Grafana的介绍、概念、使用等具体问题请参考下面网址:</h4><p><a href="http://docs.grafana.org/" target="_blank" rel="noopener">Grafana官网</a></p>
+
+        </div>
+        <!-- .entry-content -->
+        <div class="single-reward">
+          <div class="reward-open">赏
+            <div class="reward-main">
+              <ul class="reward-row">
+                <li class="alipay-code"><img src="https://cdn.jsdelivr.net/gh/amyz666/cdn@latest/img/custom/donate/alipay.png"></li>
+                <li class="wechat-code"><img src="https://cdn.jsdelivr.net/gh/amyz666/cdn@latest/img/custom/donate/wechat_pay.png"></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div style="text-align:center; width: 100%" class="social-share share-mobile" data-disabled="diandian, tencent"></div>
+        <footer class="post-footer">
+          <div class="post-lincenses"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="nofollow"><i class="fa fa-creative-commons" aria-hidden="true"></i> 知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a></div>
+          <div class="post-tags">
+          </div>
+          <div class="post-share">
+            <div class="social-share sharehidden share-component"></div>
+            <i class="iconfont show-share icon-forward"></i>
+          </div>
+        </footer><!-- .entry-footer -->
+      </article>
+      <!-- #post-## -->
+      <div class="toc" style="background: none;"></div>
+      <section class="post-squares nextprev">
+        
+        
+          
+            <div class="post-nepre full next">
+          
+            <a href="/rancher-install-k8s/" rel="next">
+              <div class="background">
+                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/amyz666/cdn@latest/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/amyz666/cdn@latest/img/photos/Rancher-install-k8s.png" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://cdn.jsdelivr.net/gh/amyz666/cdn@latest/img/photos/Rancher-install-k8s.png">
+              </div>
+              <span class="label">
+              Next Post</span>
+              <div class="info">
+                <h3>
+                通过Rancher安装K8s</h3>
+                <hr>
+              </div>
+            </a>
+          </div>
+        
+      </section>
       
+<div id="vcomments"></div>
 <script>
-  var videos = [
-    {
-      img: 'https://lain.bgm.tv/pic/cover/l/0e/1e/218971_2y351.jpg',
-      title: '朝花夕誓——于离别之朝束起约定之花',
-      status: '已追完',
-      progress: 100,
-      jp: 'さよならの朝に約束の花をかざろう',
-      time: '放送时间: 2018-02-24 SUN.',
-      desc: ' 住在远离尘嚣的土地，一边将每天的事情编织成名为希比欧的布，一边静静生活的伊欧夫人民。在15岁左右外表就停止成长，拥有数百年寿命的他们，被称为“离别的一族”，并被视为活着的传说。没有双亲的伊欧夫少女玛奇亚，过着被伙伴包围的平稳日子，却总感觉“孤身一人”。他们的这种日常，一瞬间就崩溃消失。追求伊欧夫的长寿之血，梅萨蒂军乘坐着名为雷纳特的古代兽发动了进攻。在绝望与混乱之中，伊欧夫的第一美女蕾莉亚被梅萨蒂带走，而玛奇亚暗恋的少年克里姆也失踪了。玛奇亚虽然总算逃脱了，却失去了伙伴和归去之地……。'
-    },
-    {
-      img : 'https://lain.bgm.tv/pic/cover/l/0e/1e/218971_2y351.jpg',
-      title: '朝花夕誓——于离别之朝束起约定之花',
-      status: '已追完',
-      progress: 100,
-      jp: 'さよならの朝に約束の花をかざろう',
-      time: '2018-02-24 SUN.',
-      desc: ' 住在远离尘嚣的土地，一边将每天的事情编织成名为希比欧的布，一边静静生活的伊欧夫人民。在15岁左右外表就停止成长，拥有数百年寿命的他们，被称为“离别的一族”，并被视为活着的传说。没有双亲的伊欧夫少女玛奇亚，过着被伙伴包围的平稳日子，却总感觉“孤身一人”。他们的这种日常，一瞬间就崩溃消失。追求伊欧夫的长寿之血，梅萨蒂军乘坐着名为雷纳特的古代兽发动了进攻。在绝望与混乱之中，伊欧夫的第一美女蕾莉亚被梅萨蒂带走，而玛奇亚暗恋的少年克里姆也失踪了。玛奇亚虽然总算逃脱了，却失去了伙伴和归去之地……。'
-    }
-  ]
+  window.onload = function(){
+      var valine = new Valine();
+      valine.init({
+        el: '#vcomments',
+        appId: "r7jfq8TWH1G3QjmKEohVHCmP-gzGzoHsz",
+        appKey: "mknYTdzA36pQ1GkL59fSnLir",
+        path: window.location.pathname,
+        placeholder: "你是我一生只会遇见一次的惊喜 ..."
+      })
+  }
 </script>
 
-
-  <style>.should-ellipsis{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:95%;}.should-ellipsis-full{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:100%;}.should-ellipsis i{position:absolute;right:24px;}.grey-text{color:#9e9e9e !important}.grey-text.text-darken-4{color:#212121 !important}html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}body{margin:0}img{border-style:none}progress{display:inline-block;vertical-align:baseline}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}html{-webkit-box-sizing:border-box;box-sizing:border-box}*,*:before,*:after{-webkit-box-sizing:inherit;box-sizing:inherit}ul:not(.browser-default){padding-left:0;list-style-type:none}ul:not(.browser-default)>li{list-style-type:none}.card{-webkit-box-shadow:0 2px 2px 0 rgba(0,0,0,0.14),0 3px 1px -2px rgba(0,0,0,0.12),0 1px 5px 0 rgba(0,0,0,0.2);box-shadow:0 2px 2px 0 rgba(0,0,0,0.14),0 3px 1px -2px rgba(0,0,0,0.12),0 1px 5px 0 rgba(0,0,0,0.2)}.hoverable{-webkit-transition:-webkit-box-shadow .25s;transition:-webkit-box-shadow .25s;transition:box-shadow .25s;transition:box-shadow .25s,-webkit-box-shadow .25s}.hoverable:hover{-webkit-box-shadow:0 8px 17px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);box-shadow:0 8px 17px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19)}i{line-height:inherit}i.right{float:right;margin-left:15px}.bangumi .right{float:right !important}.material-icons{text-rendering:optimizeLegibility;-webkit-font-feature-settings:'liga';-moz-font-feature-settings:'liga';font-feature-settings:'liga'}.row{margin-left:auto;margin-right:auto;margin-bottom:20px}.row:after{content:"";display:table;clear:both}.row .col{float:left;-webkit-box-sizing:border-box;box-sizing:border-box;padding:0 .75rem;min-height:1px}.row .col.s12{width:100%;margin-left:auto;left:auto;right:auto}@media only screen and (min-width:601px){.row .col.m6{width:50%;margin-left:auto;left:auto;right:auto}}html{line-height:1.5;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;font-weight:normal;color:rgba(0,0,0,0.87)}@media only screen and (min-width:0){html{font-size:14px}}@media only screen and (min-width:992px){html{font-size:14.5px}}@media only screen and (min-width:1200px){html{font-size:15px}}.card{position:relative;margin:.5rem 0 1rem 0;background-color:#fff;-webkit-transition:-webkit-box-shadow .25s;transition:-webkit-box-shadow .25s;transition:box-shadow .25s;transition:box-shadow .25s,-webkit-box-shadow .25s;border-radius:2px}.card .card-title{font-size:24px;font-weight:300}.card .card-title.activator{cursor:pointer}.card .card-image{position:relative}.card .card-image img{display:block;border-radius:2px 2px 0 0;position:relative;left:0;right:0;top:0;bottom:0;width:100%}.card .card-content{padding:24px;border-radius:0 0 2px 2px}.card .card-content p{margin:0}.card .card-content .card-title{display:block;line-height:32px;margin-bottom:8px}.card .card-content .card-title i{line-height:32px}.card .card-reveal{padding:24px;position:absolute;background-color:#fff;width:100%;overflow-y:auto;left:0;top:100%;height:100%;z-index:3;display:none}.card .card-reveal .card-title{cursor:pointer;display:block}.waves-effect{position:relative;cursor:pointer;display:inline-block;overflow:hidden;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;vertical-align:middle;z-index:1;-webkit-transition:.3s ease-out;transition:.3s ease-out}.waves-effect img{position:relative;z-index:-1}.waves-block{display:block}::-webkit-input-placeholder{color:#d1d1d1}::-moz-placeholder{color:#d1d1d1}:-ms-input-placeholder{color:#d1d1d1}::-ms-input-placeholder{color:#d1d1d1}[type="radio"]:not(:checked){position:absolute;opacity:0;pointer-events:none}[type="radio"]:not(:checked)+span{position:relative;padding-left:35px;cursor:pointer;display:inline-block;height:25px;line-height:25px;font-size:1rem;-webkit-transition:.28s ease;transition:.28s ease;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}[type="radio"]:not(:checked)+span:before,[type="radio"]:not(:checked)+span:after{border-radius:50%}[type="radio"]:not(:checked)+span:before,[type="radio"]:not(:checked)+span:after{border:2px solid #5a5a5a}[type="radio"]:not(:checked)+span:after{-webkit-transform:scale(0);transform:scale(0)}[type="checkbox"]:not(:checked){position:absolute;opacity:0;pointer-events:none}[type="checkbox"]:not(:checked):disabled+span:not(.lever):before{border:none;background-color:rgba(0,0,0,0.42)}[type="checkbox"].filled-in:not(:checked)+span:not(.lever):before{width:0;height:0;border:3px solid transparent;left:6px;top:10px;-webkit-transform:rotateZ(37deg);transform:rotateZ(37deg);-webkit-transform-origin:100% 100%;transform-origin:100% 100%}[type="checkbox"].filled-in:not(:checked)+span:not(.lever):after{height:20px;width:20px;background-color:transparent;border:2px solid #5a5a5a;top:0px;z-index:0}input[type=checkbox]:not(:disabled) ~ .lever:active:before,input[type=checkbox]:not(:disabled).tabbed:focus ~ .lever::before{-webkit-transform:scale(2.4);transform:scale(2.4);background-color:rgba(0,0,0,0.08)}input[type=range].focused:focus:not(.active)::-webkit-slider-thumb{-webkit-box-shadow:0 0 0 10px rgba(38,166,154,0.26);box-shadow:0 0 0 10px rgba(38,166,154,0.26)}input[type=range].focused:focus:not(.active)::-moz-range-thumb{box-shadow:0 0 0 10px rgba(38,166,154,0.26)}input[type=range].focused:focus:not(.active)::-ms-thumb{box-shadow:0 0 0 10px rgba(38,166,154,0.26)}
-  </style>
-  <header class="page-header"><h1 class="cat-title">番组计划</h1> <span class="cat-des"><p>这里将是永远的回忆</p> </span></header>
-  <div class="bangumi">
-    <div class="row" id="rootRow">
-    </div>
-  </div>
-  <script>
-  window.onload = function(){
-    videos.forEach(function(video, i){
-      $('#rootRow').append(`<div class="col s12 m6" id="bangumi-218971">
-        <div class="card hoverable" style="overflow: visible;">
-          <div class="card-image waves-effect waves-block waves-light">
-            <div class="activator itempic lazyload" style="background-image: url(${video.img});" data-src="${video.img}">
-            </div>
-          </div>
-          <div class="card-content">
-            <div class="card-title should-ellipsis activator grey-text text-darken-4">
-              ${video.title}<i class="fa fa-commenting-o right"></i>
-            </div>
-            <p class="should-ellipsis-full">
-            ${video.jp}</p>
-            <ul class="skill-list">
-              <li class="skill">
-                <div>
-                ${video.status}</div>
-                <progress class="skill-1" max="100" value="${video.progress}">
-                </progress>
-              </li>
-            </ul>
-          </div>
-          <div class="card-reveal" style="display: none; transform: translateY(0%);">
-            <span class="card-title grey-text text-darken-4">
-              ${video.title}<i class="fa fa-close right"></i>
-            </span>
-            <span>
-              ${video.jp}<br>
-            </span>
-            <span>
-              放送时间: ${video.time}<span>
-                <p>${video.desc}</p>
-                <ul class="skill-list">
-                  <li class="skill">
-                    <div>
-                    ${video.status}</div>
-                    <progress class="skill-1" max="100" value="${video.progress}">
-                    </progress>
-                  </li>
-                </ul>
-              </span>
-            </span>
-          </div>
-        </div>
-      </div>`)
-    })
-  }
-  </script>
-
-      <!-- .entry-content -->
-      
-      <div class="single-reward">
-        <div class="reward-open">赏
-          <div class="reward-main">
-            <ul class="reward-row">
-              <li class="alipay-code"><img src="https://cdn.jsdelivr.net/gh/amyz666/cdn@latest/img/custom/donate/alipay.png"></li>
-              <li class="wechat-code"><img src="https://cdn.jsdelivr.net/gh/amyz666/cdn@latest/img/custom/donate/wechat_pay.png"></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div style="text-align:center; width: 100%" class="social-share share-mobile" data-disabled="diandian, tencent"></div>
-      <footer class="post-footer">
-        <div class="post-lincenses"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="nofollow"><i class="fa fa-creative-commons" aria-hidden="true"></i> 知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a></div>
-        <div class="post-tags">
-        </div>
-        <div class="post-share">
-          <div class="social-share sharehidden share-component"></div>
-          <i class="iconfont show-share icon-forward"></i>
-        </div>
-      </footer><!-- .entry-footer -->
-    </article>
-      <!-- #post-## -->
       <section class="author-profile">
         <div class="info" itemprop="author" itemscope="" itemtype="https://schema.org/Person">
-          <a href="/about/" class="profile gravatar"><img src="https://cdn.jsdelivr.net/gh/amyz666/cdn@latest/img/custom/avatar.png" itemprop="image" alt="AmyZ" height="70" width="70"></a>
+          <a href="rezeroing.com" class="profile gravatar"><img src="https://cdn.jsdelivr.net/gh/amyz666/cdn@latest/img/custom/avatar.png" itemprop="image" alt="AmyZ" height="70" width="70"></a>
           <div class="meta">
             <span class="title">Author</span>
             <h3 itemprop="name">
-            <a href="https://amyz666.github.io" itemprop="url" rel="author">AmyZ</a>
+            <a href="rezeroing.com" itemprop="url" rel="author">AmyZ</a>
             </h3>
           </div>
         </div>
         <hr>
-        <p><i class="iconfont icon-write"></i>遇事不决，可问春风</p>
+        <p><i class="iconfont icon-write"></i>一个好奇的人</p>
       </section>
+    </main><!-- #main -->
   </div><!-- #primary -->
 </div>
+
+
+
     </div>    
     <div class="ins-search">
     <div class="ins-search-mask"></div>

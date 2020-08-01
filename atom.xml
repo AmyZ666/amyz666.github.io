@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="/"/>
-  <updated>2020-03-16T10:41:30.000Z</updated>
+  <updated>2020-08-01T05:59:24.577Z</updated>
   <id>/</id>
   
   <author>
@@ -17,24 +17,74 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Hexo-Theme-Sakura</title>
-    <link href="/Hexo-Theme-Sakura/"/>
-    <id>/Hexo-Theme-Sakura/</id>
-    <published>2018-12-12T14:16:01.000Z</published>
-    <updated>2020-03-16T10:41:30.000Z</updated>
+    <title>Prometheus+Grafana安装及使用</title>
+    <link href="/prometheus-grafana/"/>
+    <id>/prometheus-grafana/</id>
+    <published>2020-08-01T05:47:15.000Z</published>
+    <updated>2020-08-01T05:59:24.577Z</updated>
     
     <summary type="html">
     
-      hexo-sakura主题使用教程
+      
+      
+        
+        
+          &lt;h2 id=&quot;Prometheus安装及使用&quot;&gt;&lt;a href=&quot;#Prometheus安装及使用&quot; class=&quot;headerlink&quot;
+        
+      
     
     </summary>
     
       <category term="技术" scheme="/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
-      <category term="web" scheme="/tags/web/"/>
+  </entry>
+  
+  <entry>
+    <title>通过Rancher安装K8s</title>
+    <link href="/rancher-install-k8s/"/>
+    <id>/rancher-install-k8s/</id>
+    <published>2020-08-01T05:14:19.000Z</published>
+    <updated>2020-08-01T06:00:21.910Z</updated>
     
-      <category term="悦读" scheme="/tags/%E6%82%A6%E8%AF%BB/"/>
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;环境准备&quot;&gt;&lt;a href=&quot;#环境准备&quot; class=&quot;headerlink&quot; title=&quot;环境准备&quot;&gt;&lt;/a&gt;环境准备&lt;/h2&gt;&lt;h3 id=&quot;1-host&quot;&gt;&lt;a href=&quot;#1-host&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="技术" scheme="/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>GitHub图片不显示问题解决</title>
+    <link href="/github-img-don-t-show/"/>
+    <id>/github-img-don-t-show/</id>
+    <published>2020-08-01T02:13:19.000Z</published>
+    <updated>2020-08-01T06:00:23.374Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Github上的图片不显示这个问题困扰我好久了，之前一直觉得用不太到，也就没解决，今天在写&lt;a href=&quot;https://jiawang.online/?p=62&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="技术" scheme="/categories/%E6%8A%80%E6%9C%AF/"/>
+    
     
   </entry>
   
