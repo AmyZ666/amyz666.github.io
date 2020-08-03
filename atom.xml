@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="/"/>
-  <updated>2020-08-01T11:21:12.508Z</updated>
+  <updated>2020-08-02T07:07:42.655Z</updated>
   <id>/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>关于Java的一些比较杂的知识</title>
+    <link href="/some-java-think/"/>
+    <id>/some-java-think/</id>
+    <published>2020-08-02T02:48:02.000Z</published>
+    <updated>2020-08-02T07:07:42.655Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;操作系统：进程和线程的区别，进程间通信的方式，线程同步机制，信号量的实现原理&quot;&gt;&lt;a href=&quot;#操作系统：进程和线程的区别，进程间通信的方式，线程同步机制，信号量的实现原理&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="技术" scheme="/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>reprinted articles</title>

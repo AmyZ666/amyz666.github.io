@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
   
-  <title itemprop="name">music | 从零开始的小站</title>
+  <title itemprop="name">关于Java的一些比较杂的知识 | 从零开始的小站</title>
   
     <link rel="shortcut icon" href="/images/favicon.ico">
   
@@ -319,66 +319,107 @@
   </div>
 </header>
 
-        <div class="pattern-center-blank"></div>
-  
-    <div class="pattern-center ">
-      <div class="pattern-attachment-img">
-        <img src="https://cdn.jsdelivr.net/gh/amyz666/cdn@latest/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/honjun/cdn@1.4/img/banner/music.jpg" class="lazyload" onerror="imgError(this,3)" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;">
-      </div>
-      <header class="pattern-header ">
-        <h1 class="entry-title">
-        喜欢的音乐</h1>
-      </header>
-    </div>
-  
-  <div id="content" class="site-content">
-    <article class="post-item post-301 page type-page status-publish has-post-thumbnail hentry">
-      
-<meting-js server="netease" type="playlist" id="2731690811" mutex="true">
-</meting-js>
+      <link rel="stylesheet" type="text/css" href="/css/sharejs.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+<div class="pattern-center-blank"></div>
 
-<meting-js server="netease" type="playlist" id="419239189" mutex="true">
-</meting-js>
+<div id="content" class="site-content">
+  <div id="primary" class="content-area">
+    <main id="main" class="site-main" role="main">
+      <article id="post-1" class="post-1 post type-post status-publish format-standard has-post-thumbnail hentry category-uncategorized">
+        <div class="toc"></div>
+        <!--<div class="toc-entry-content"><!-- 套嵌目录使用（主要为了支援评论）-->
+        
+          <header class="entry-header">
+            <h1 class="entry-title">关于Java的一些比较杂的知识</h1>
+            <p class="entry-census">AmyZ&nbsp;·&nbsp;2020-8-2&nbsp;·&nbsp;<span id="busuanzi_value_page_pv"></span>次阅读</p></p>
 
-      <!-- .entry-content -->
-      
-      <div class="single-reward">
-        <div class="reward-open">赏
-          <div class="reward-main">
-            <ul class="reward-row">
-              <li class="alipay-code"><img src="https://cdn.jsdelivr.net/gh/amyz666/cdn@latest/img/custom/donate/alipay.png"></li>
-              <li class="wechat-code"><img src="https://cdn.jsdelivr.net/gh/amyz666/cdn@latest/img/custom/donate/wechat_pay.png"></li>
-            </ul>
+            <hr>
+          </header>
+        
+        <div class="entry-content">
+          <h2 id="操作系统：进程和线程的区别，进程间通信的方式，线程同步机制，信号量的实现原理"><a href="#操作系统：进程和线程的区别，进程间通信的方式，线程同步机制，信号量的实现原理" class="headerlink" title="操作系统：进程和线程的区别，进程间通信的方式，线程同步机制，信号量的实现原理"></a>操作系统：进程和线程的区别，进程间通信的方式，线程同步机制，信号量的实现原理</h2><h3 id="1、进程和线程的区别"><a href="#1、进程和线程的区别" class="headerlink" title="1、进程和线程的区别"></a>1、进程和线程的区别</h3><p>进程是运行中的程序，线程是进程中内部的执行序列。进程是资源分配的单元，线程是执行单元。<br>进程之间切换耗时大，线程之间切换耗时小。进程占的资源多，线程占的资源少。<br>多个线程共享进程中的资源。</p>
+
+        </div>
+        <!-- .entry-content -->
+        <div class="single-reward">
+          <div class="reward-open">赏
+            <div class="reward-main">
+              <ul class="reward-row">
+                <li class="alipay-code"><img src="https://cdn.jsdelivr.net/gh/amyz666/cdn@latest/img/custom/donate/alipay.png"></li>
+                <li class="wechat-code"><img src="https://cdn.jsdelivr.net/gh/amyz666/cdn@latest/img/custom/donate/wechat_pay.png"></li>
+              </ul>
+            </div>
           </div>
         </div>
-      </div>
-      <div style="text-align:center; width: 100%" class="social-share share-mobile" data-disabled="diandian, tencent"></div>
-      <footer class="post-footer">
-        <div class="post-lincenses"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="nofollow"><i class="fa fa-creative-commons" aria-hidden="true"></i> 知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a></div>
-        <div class="post-tags">
-        </div>
-        <div class="post-share">
-          <div class="social-share sharehidden share-component"></div>
-          <i class="iconfont show-share icon-forward"></i>
-        </div>
-      </footer><!-- .entry-footer -->
-    </article>
+        <div style="text-align:center; width: 100%" class="social-share share-mobile" data-disabled="diandian, tencent"></div>
+        <footer class="post-footer">
+          <div class="post-lincenses"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="nofollow"><i class="fa fa-creative-commons" aria-hidden="true"></i> 知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a></div>
+          <div class="post-tags">
+          </div>
+          <div class="post-share">
+            <div class="social-share sharehidden share-component"></div>
+            <i class="iconfont show-share icon-forward"></i>
+          </div>
+        </footer><!-- .entry-footer -->
+      </article>
       <!-- #post-## -->
+      <div class="toc" style="background: none;"></div>
+      <section class="post-squares nextprev">
+        
+        
+          
+            <div class="post-nepre full next">
+          
+            <a href="/reprinted-articles/" rel="next">
+              <div class="background">
+                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/amyz666/cdn@latest/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/amyz666/cdn@latest/img/photos/vn-linghun.jpg" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://cdn.jsdelivr.net/gh/amyz666/cdn@latest/img/photos/vn-linghun.jpg">
+              </div>
+              <span class="label">
+              Next Post</span>
+              <div class="info">
+                <h3>
+                reprinted articles</h3>
+                <hr>
+              </div>
+            </a>
+          </div>
+        
+      </section>
+      
+<div id="vcomments"></div>
+<script>
+  window.onload = function(){
+      var valine = new Valine();
+      valine.init({
+        el: '#vcomments',
+        appId: "r7jfq8TWH1G3QjmKEohVHCmP-gzGzoHsz",
+        appKey: "mknYTdzA36pQ1GkL59fSnLir",
+        path: window.location.pathname,
+        placeholder: "你是我一生只会遇见一次的惊喜 ..."
+      })
+  }
+</script>
+
       <section class="author-profile">
         <div class="info" itemprop="author" itemscope="" itemtype="https://schema.org/Person">
-          <a href="/about/" class="profile gravatar"><img src="https://cdn.jsdelivr.net/gh/amyz666/cdn@latest/img/custom/avatar.png" itemprop="image" alt="AmyZ" height="70" width="70"></a>
+          <a href="https://rezeroing.com" class="profile gravatar"><img src="https://cdn.jsdelivr.net/gh/amyz666/cdn@latest/img/custom/avatar.png" itemprop="image" alt="AmyZ" height="70" width="70"></a>
           <div class="meta">
             <span class="title">Author</span>
             <h3 itemprop="name">
-            <a href="https://amyz666.github.io" itemprop="url" rel="author">AmyZ</a>
+            <a href="https://rezeroing.com" itemprop="url" rel="author">AmyZ</a>
             </h3>
           </div>
         </div>
         <hr>
-        <p><i class="iconfont icon-write"></i>遇事不决，可问春风</p>
+        <p><i class="iconfont icon-write"></i>一个好奇的人</p>
       </section>
+    </main><!-- #main -->
   </div><!-- #primary -->
 </div>
+
+
+
     </div>    
     <div class="ins-search">
     <div class="ins-search-mask"></div>
