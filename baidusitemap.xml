@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>/some-java-think/</loc>
+    <lastmod>2020-08-02</lastmod>
+  </url>
+  <url>
+    <loc>/rancher-install-k8s/</loc>
+    <lastmod>2020-08-01</lastmod>
+  </url>
+  <url>
+    <loc>/prometheus-grafana/</loc>
+    <lastmod>2020-08-01</lastmod>
+  </url>
+  <url>
+    <loc>/suixiang-test/</loc>
+    <lastmod>2020-08-01</lastmod>
+  </url>
+  <url>
+    <loc>/reprinted-articles/</loc>
+    <lastmod>2020-08-01</lastmod>
+  </url>
+  <url>
+    <loc>/github-img-don-t-show/</loc>
+    <lastmod>2020-08-01</lastmod>
+  </url>
+</urlset> 
