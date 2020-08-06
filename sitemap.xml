@@ -100,6 +100,13 @@
   </url>
   
   <url>
+    <loc>/music/index.html</loc>
+    
+    <lastmod>2020-03-16</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>/rss/index.html</loc>
     
     <lastmod>2020-03-16</lastmod>
@@ -108,13 +115,6 @@
   
   <url>
     <loc>/tags/index.html</loc>
-    
-    <lastmod>2020-03-16</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>/music/index.html</loc>
     
     <lastmod>2020-03-16</lastmod>
     
@@ -130,7 +130,7 @@
 
   <url>
     <loc></loc>
-    <lastmod>2020-08-05</lastmod>
+    <lastmod>2020-08-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -140,21 +140,21 @@
   
   <url>
     <loc>/categories/%E6%8A%80%E6%9C%AF/</loc>
-    <lastmod>2020-08-05</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>/categories/%E8%BD%AC%E8%BD%BD/</loc>
-    <lastmod>2020-08-05</lastmod>
+    <lastmod>2020-08-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>/categories/%E9%9A%8F%E6%83%B3/</loc>
-    <lastmod>2020-08-05</lastmod>
+    <lastmod>2020-08-06</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/%E8%BD%AC%E8%BD%BD/</loc>
+    <lastmod>2020-08-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
